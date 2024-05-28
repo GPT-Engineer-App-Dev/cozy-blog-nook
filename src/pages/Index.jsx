@@ -1,10 +1,14 @@
-import { Box, Container, Flex, Heading, Link, Text, VStack, HStack, Spacer, IconButton, Button } from "@chakra-ui/react";
-import { FaTwitter, FaFacebook, FaInstagram } from "react-icons/fa";
+import { Box, Container, Flex, Heading, Link, Text, VStack, HStack, Spacer, IconButton, Button, useColorMode, useColorModeValue } from "@chakra-ui/react";
+import { FaTwitter, FaFacebook, FaInstagram, FaSun, FaMoon } from "react-icons/fa"; // Import icons
 import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 const Index = () => {
   const [posts, setPosts] = useState([]);
+
+  const { colorMode, toggleColorMode } = useColorMode(); // Use color mode hook
+  const bg = useColorModeValue("gray.800", "gray.200"); // Background color based on color mode
+  const color = useColorModeValue("white", "black"); // Text color based on color mode
 
   useEffect(() => {
     const storedPosts = JSON.parse(localStorage.getItem("posts")) || [];
@@ -14,13 +18,18 @@ const Index = () => {
   return (
     <Container maxW="container.xl">
       {/* Navigation Bar */}
-      <Flex as="nav" bg="gray.800" color="white" p={4} align="center">
+      <Flex as="nav" bg={bg} color={color} p={4} align="center">
         <Heading size="md">My Blog</Heading>
         <Spacer />
         <HStack spacing={4}>
-          <Link as={RouterLink} to="/" color="white">Home</Link>
-          <Link as={RouterLink} to="/about" color="white">About</Link>
-          <Link as={RouterLink} to="/contact" color="white">Contact</Link>
+          <Link as={RouterLink} to="/" color={color}>Home</Link>
+          <Link as={RouterLink} to="/about" color={color}>About</Link>
+          <Link as={RouterLink} to="/contact" color={color}>Contact</Link>
+          <IconButton
+            aria-label="Toggle dark mode"
+            icon={colorMode === "light" ? <FaMoon /> : <FaSun />}
+            onClick={toggleColorMode}
+          />
         </HStack>
       </Flex>
 
@@ -58,7 +67,7 @@ const Index = () => {
       </Flex>
 
       {/* Footer */}
-      <Flex as="footer" bg="gray.800" color="white" p={4} mt={8} align="center" justify="center">
+      <Flex as="footer" bg={bg} color={color} p={4} mt={8} align="center" justify="center">
         <HStack spacing={4}>
           <IconButton as="a" href="#" aria-label="Twitter" icon={<FaTwitter />} />
           <IconButton as="a" href="#" aria-label="Facebook" icon={<FaFacebook />} />
